@@ -3,16 +3,19 @@
   "info": {
     "title": "Bizongo Integration Gateway",
     "version": "1.0.1",
-    "description": "API contracts to integrate client applications with Bizongo's internal applications for order creation and tracking"
+    "description": "API contracts to integrate client applications with Bizongo's internal applications for order creation and tracking",
+    "contact": {
+      "name": "Integrations @ Bizongo"
+    }
   },
   "servers": [
     {
-      "url": "http://api.bizongo.in",
+      "url": "https://api.bizongo.in",
       "description": "Production"
     },
     {
-      "description": "Demo Environment",
-      "url": "https://esb.demo.bizongo.in"
+      "description": "Staging",
+      "url": "https://api.demo.bizongo.in"
     }
   ],
   "paths": {
@@ -495,7 +498,7 @@
                       },
                       "billing_address_id": {
                         "type": "string",
-                        "example": 762251,
+                        "example": "762251",
                         "description": "Billing address identifier (buyer_warehouse_code) of the address stored on Bizongo"
                       },
                       "items": {
@@ -792,7 +795,16 @@
                                   "type": "string"
                                 },
                                 "status": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "enum": [
+                                    "ready_to_ship",
+                                    "dispatched",
+                                    "delivered",
+                                    "cancelled",
+                                    "could_not_deliver",
+                                    "shipment_lost",
+                                    "returned"
+                                  ]
                                 },
                                 "courier": {
                                   "type": "string"
@@ -940,14 +952,16 @@
               "type": "number"
             },
             "in": "query",
-            "name": "page"
+            "name": "page",
+            "description": "By default, the page size will be 1"
           },
           {
             "schema": {
               "type": "number"
             },
             "in": "query",
-            "name": "per_page"
+            "name": "per_page",
+            "description": "Page size will be set at a default of 10 records, a max of 50 records can be requested"
           },
           {
             "schema": {
@@ -1253,5 +1267,13 @@
         "description": "Email ID against which token is generated, this ID must be having procure live access."
       }
     }
-  }
+  },
+  "security": [
+    {
+      "AuthToken": []
+    },
+    {
+      "Email": []
+    }
+  ]
 }
